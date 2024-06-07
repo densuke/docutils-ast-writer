@@ -45,9 +45,9 @@ class ASTTranslator(nodes.GenericNodeVisitor):
         if node.line:
             line = node.line
         # Attributes
-        for k, v in list(node.__dict__.items()):
+        for k, v in node.__dict__.items():
             try:
-                if not k.startswith('__') and isinstance(v, (str, int, float, bool)):
+                if not k.startswith('__') and isinstance(v, (str, int, float, bool, unicode, long,)):
                     result[k] = v
             except NameError as e:
                 pass
@@ -55,7 +55,7 @@ class ASTTranslator(nodes.GenericNodeVisitor):
         if 'tagname' not in result:
             result['tagname'] = 'text'
         # Text
-        if isinstance(node, nodes.Text):
+        if isinstance(node, (nodes.Text,)):
             result['text'] = node.astext()
         # line.start
         result['line'] = {
